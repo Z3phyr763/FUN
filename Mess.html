@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>For You ❤️</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+    
+    *{box-sizing:border-box;margin:0;padding:0}
+    
+    body{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      font-family:'Poppins', sans-serif;
+      background:#0a0a0a;
+      overflow:hidden;
+      color:white;
+      position:relative;
+    }
+
+    video.bgvid{
+      position:fixed;
+      top:0;left:0;
+      width:100%;
+      height:100%;
+      object-fit:cover; /* always fill screen */
+      z-index:1;
+      filter:brightness(0.4) saturate(1.2);
+    }
+
+    .vignette{
+      position:fixed;
+      top:0;left:0;
+      width:100%;
+      height:100%;
+      z-index:2;
+      background:radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.7) 100%);
+      pointer-events:none;
+    }
+
+    .hearts-container{
+      position:fixed;
+      top:0;left:0;
+      width:100%;
+      height:100%;
+      z-index:3;
+      pointer-events:none;
+      overflow:hidden;
+    }
+
+    .heart{
+      position:absolute;
+      font-size:20px;
+      opacity:0;
+      animation:floatHeart 8s ease-in infinite;
+    }
+
+    @keyframes floatHeart {
+      0%{opacity:0; transform:translateY(100vh) scale(0) rotate(0deg);}
+      10%{opacity:0.6;}
+      90%{opacity:0.3;}
+      100%{opacity:0; transform:translateY(-100px) scale(1.5) rotate(360deg);}
+    }
+
+    .overlay{
+      position:relative;
+      z-index:10;
+      text-align:center;
+      max-width:800px;
+      padding:50px 40px;
+      background:rgba(15,15,25,0.75);
+      backdrop-filter:blur(20px);
+      border-radius:30px;
+      border:1px solid rgba(255,255,255,0.1);
+      box-shadow:0 20px 60px rgba(0,0,0,0.5),
+                 inset 0 1px 0 rgba(255,255,255,0.1);
+      animation: fadeInUp 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes fadeInUp {
+      from {opacity:0; transform:translateY(60px) scale(0.95);}
+      to {opacity:1; transform:translateY(0) scale(1);}
+    }
+
+    h1{
+      font-family:'Playfair Display', serif;
+      font-size:clamp(36px,6vw,68px);
+      margin-bottom:20px;
+      background:linear-gradient(135deg, #ff9a9e 0%, #fad0c4 50%, #ffecd2 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      font-weight:700;
+      letter-spacing:2px;
+      animation:shimmer 3s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100%{filter:brightness(1)}
+      50%{filter:brightness(1.3)}
+    }
+
+    .subtitle{
+      font-size:clamp(16px,2.5vw,22px);
+      margin-bottom:35px;
+      color:#ffd4d8;
+      font-weight:300;
+      letter-spacing:1px;
+      opacity:0;
+      animation:fadeIn 1.5s ease 0.5s forwards;
+    }
+
+    @keyframes fadeIn {to{opacity:1}}
+
+    .message{
+      font-size:clamp(17px,2vw,21px);
+      line-height:1.8;
+      margin-bottom:30px;
+      padding:30px;
+      background:rgba(255,255,255,0.05);
+      border-radius:20px;
+      border-left:4px solid #ff6b9a;
+      color:#fff;
+      text-align:left;
+      opacity:0;
+      animation:fadeIn 1.5s ease 1s forwards;
+    }
+
+    .controls{
+      display:flex;
+      gap:15px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top:30px;
+      opacity:0;
+      animation:fadeIn 1.5s ease 1.5s forwards;
+    }
+
+    .btn{
+      background:linear-gradient(135deg, #ff6b9a 0%, #ff8fab 100%);
+      color:white;
+      border:none;
+      padding:14px 28px;
+      border-radius:50px;
+      cursor:pointer;
+      font-weight:600;
+      font-size:16px;
+      transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow:0 4px 15px rgba(255,107,154,0.3);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .btn::before{
+      content:''; position:absolute; top:50%; left:50%;
+      width:0; height:0;
+      border-radius:50%;
+      background:rgba(255,255,255,0.3);
+      transform:translate(-50%, -50%);
+      transition:width 0.6s, height 0.6s;
+    }
+    .btn:hover::before{width:300px;height:300px;}
+    .btn:hover{transform:translateY(-3px) scale(1.05); box-shadow:0 8px 25px rgba(255,107,154,0.5);}
+    .btn:active{transform:translateY(-1px) scale(1.02);}
+    .btn:disabled{background:linear-gradient(135deg, #999 0%, #bbb 100%); cursor:not-allowed; transform:none; box-shadow:none;}
+    .btn span{position:relative; z-index:1;}
+
+    footer{
+      margin-top:30px;
+      font-size:14px;
+      color:#bbb;
+      opacity:0;
+      animation:fadeIn 1.5s ease 2s forwards;
+    }
+
+    .revealed-message{
+      margin-top:20px;
+      padding:25px;
+      font-style:italic;
+      color:#ffd4d8;
+      background:linear-gradient(135deg, rgba(255,107,154,0.2) 0%, rgba(255,140,171,0.2) 100%);
+      border-radius:15px;
+      border:1px solid rgba(255,107,154,0.3);
+      animation:revealFade 1s ease;
+      box-shadow:0 4px 20px rgba(255,107,154,0.2);
+    }
+
+    @keyframes revealFade {
+      from{opacity:0; transform:translateY(20px) scale(0.95);}
+      to{opacity:1; transform:translateY(0) scale(1);}
+    }
+
+    .music-visualizer{
+      display:flex;
+      gap:4px;
+      justify-content:center;
+      margin:20px 0;
+      height:40px;
+      align-items:flex-end;
+      opacity:0;
+      transition:opacity 0.5s;
+    }
+    .music-visualizer.active{opacity:1;}
+
+    .bar{
+      width:4px;
+      background:linear-gradient(to top, #ff6b9a, #ffd4d8);
+      border-radius:2px;
+      animation:pulse 0.8s ease-in-out infinite;
+    }
+    .bar:nth-child(1){animation-delay:0s; height:15px}
+    .bar:nth-child(2){animation-delay:0.1s; height:25px}
+    .bar:nth-child(3){animation-delay:0.2s; height:35px}
+    .bar:nth-child(4){animation-delay:0.3s; height:25px}
+    .bar:nth-child(5){animation-delay:0.4s; height:20px}
+    .bar:nth-child(6){animation-delay:0.5s; height:30px}
+    .bar:nth-child(7){animation-delay:0.6s; height:20px}
+
+    @keyframes pulse {0%,100%{transform:scaleY(0.5)} 50%{transform:scaleY(1)}}
+
+    /* 📱 Responsive adjustments */
+    @media(max-width:768px){
+      .overlay{padding:35px 25px}
+      .controls{gap:10px}
+      .btn{padding:12px 22px; font-size:14px}
+    }
+
+    @media(max-width:480px){
+      h1{font-size:28px;}
+      .message{font-size:15px; padding:20px;}
+      .btn{padding:10px 18px; font-size:13px;}
+    }
+
+    /* 🔒 Force portrait orientation hint */
+    @media screen and (orientation: landscape) {
+      body::before {
+        content: "📱 Please rotate your phone to portrait";
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0,0,0,0.7);
+        padding: 20px 30px;
+        border-radius: 10px;
+        color: white;
+        font-size: 18px;
+        z-index: 9999;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <video autoplay muted loop playsinline class="bgvid">
+    <source src="FLOWERS.mp4" type="video/mp4">
+  </video>
+
+  <div class="vignette"></div>
+  <div class="hearts-container" id="heartsContainer"></div>
+
+  <div class="overlay">
+    <h1>Hey Beautiful</h1>
+    <p class="subtitle">This is my little space for you ❤️</p>
+    
+    <div class="music-visualizer" id="visualizer">
+      <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+      <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+    </div>
+
+    <div class="message" id="message">
+      No matter what has changed, my feelings for you remain. I still like you after all. Through all the ups and downs, the distance, and the silence—you've stayed in my heart.
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="playBtn"><span>🎶 Play Music</span></button>
+      <button class="btn" id="pauseBtn"><span>⏸️ Pause</span></button>
+      <button class="btn" id="revealBtn"><span>💌 Reveal More</span></button>
+    </div>
+
+    <footer>✨ Press Play to start the music</footer>
+  </div>
+
+  <audio id="bgAudio" loop>
+    <source src="Mine.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const audio = document.getElementById('bgAudio');
+    const playBtn = document.getElementById('playBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const revealBtn = document.getElementById('revealBtn');
+    const message = document.getElementById('message');
+    const visualizer = document.getElementById('visualizer');
+    const heartsContainer = document.getElementById('heartsContainer');
+
+    function safePlay(){ 
+      audio.play().then(() => {
+        visualizer.classList.add('active');
+        playBtn.innerHTML = '<span>🎵 Playing</span>';
+      }).catch(()=>{}); 
+    }
+    setTimeout(safePlay, 1000);
+
+    playBtn.addEventListener('click', ()=>{ audio.play().then(() => {
+        visualizer.classList.add('active');
+        playBtn.innerHTML = '<span>🎵 Playing</span>'; }); });
+
+    pauseBtn.addEventListener('click', ()=>{ audio.pause(); visualizer.classList.remove('active');
+      playBtn.innerHTML = '<span>🎶 Play Music</span>'; });
+
+    revealBtn.addEventListener('click', ()=>{ const revealed = document.createElement('div');
+      revealed.className = 'revealed-message';
+      revealed.innerHTML = "P.S. You'll always be someone special to me. No matter where life takes us, you hold a piece of my heart that no one else can touch. ❤️";
+      message.insertAdjacentElement('afterend', revealed);
+      revealBtn.disabled = true; revealBtn.innerHTML = '<span>✨ Revealed</span>'; });
+
+    function createHeart(){
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.textContent = '❤️';
+      heart.style.left = Math.random() * 100 + '%';
+      heart.style.animationDuration = (Math.random() * 3 + 5) + 's';
+      heart.style.animationDelay = Math.random() * 2 + 's';
+      heartsContainer.appendChild(heart);
+      setTimeout(() => heart.remove(), 8000);
+    }
+    setInterval(createHeart, 2000);
+    for(let i = 0; i < 5; i++){ setTimeout(createHeart, i * 400); }
+  </script>
+</body>
+</html>
