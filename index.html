@@ -21,7 +21,7 @@
       position:relative;
     }
 
-    /* ✅ FIXED background video CSS */
+    /* ✅ Background video CSS */
     .bgvid {
       position: fixed;
       top: 0;
@@ -31,6 +31,8 @@
       object-fit: cover;
       z-index: 1;
       filter: brightness(0.4) saturate(1.2);
+      background: url('fallback.jpg') no-repeat center center fixed; /* fallback */
+      background-size: cover;
     }
 
     .vignette{
@@ -288,8 +290,10 @@
 </head>
 <body>
 
-  <video autoplay muted loop playsinline class="bgvid">
+  <!-- ✅ Background video with fallback -->
+  <video autoplay muted loop playsinline class="bgvid" id="bgvid">
     <source src="FLOWERS.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
   </video>
 
   <div class="vignette"></div>
@@ -311,6 +315,7 @@
 
     <div class="message" id="message">
      Sorry if I’m still a bit makulit sa imoha right now, pero tbh I just really like talking to you. And honestly, I can’t fade my feelings for you, no matter how much time passes, they always stay.
+    </div>
 
     <div class="controls">
       <button class="btn" id="playBtn"><span>🎶 Play Music</span></button>
@@ -384,4 +389,3 @@
   </script>
 </body>
 </html>
-
