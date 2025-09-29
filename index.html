@@ -334,63 +334,74 @@
   </audio>
 
   <script>
-    const audio = document.getElementById('bgAudio');
-    const playBtn = document.getElementById('playBtn');
-    const pauseBtn = document.getElementById('pauseBtn');
-    const revealBtn = document.getElementById('revealBtn');
-    const message = document.getElementById('message');
-    const visualizer = document.getElementById('visualizer');
-    const heartsContainer = document.getElementById('heartsContainer');
+  const audio = document.getElementById('bgAudio');
+  const playBtn = document.getElementById('playBtn');
+  const pauseBtn = document.getElementById('pauseBtn');
+  const revealBtn = document.getElementById('revealBtn');
+  const message = document.getElementById('message');
+  const visualizer = document.getElementById('visualizer');
+  const heartsContainer = document.getElementById('heartsContainer');
 
-    function safePlay(){ 
-      audio.play().then(() => {
-        visualizer.classList.add('active');
-        playBtn.innerHTML = '<span>🎵 Playing</span>';
-      }).catch(()=>{}); 
-    }
+  function safePlay() { 
+    audio.play().then(() => {
+      visualizer.classList.add('active');
+      playBtn.innerHTML = '<span>🎵 Playing</span>';
+    }).catch(() => {
+      // if autoplay is blocked, wait for first click anywhere
+      document.body.addEventListener('click', () => {
+        audio.play().then(() => {
+          visualizer.classList.add('active');
+          playBtn.innerHTML = '<span>🎵 Playing</span>';
+        });
+      }, { once: true });
+    }); 
+  }
+
+  // ✅ Try autoplay immediately when page loads
+  window.addEventListener('load', () => {
+    setTimeout(safePlay, 500);
+  });
+
+  playBtn.addEventListener('click', () => {
+    safePlay();
+  });
+
+  pauseBtn.addEventListener('click', () => {
+    audio.pause();
+    visualizer.classList.remove('active');
+    playBtn.innerHTML = '<span>🎶 Play Music</span>';
+  });
+
+  revealBtn.addEventListener('click', () => {
+    const revealed = document.createElement('div');
+    revealed.className = 'revealed-message';
+    revealed.innerHTML = "P.S. You'll always be someone special to me. No matter where life takes us, you hold a piece of my heart that no one else can touch. You are truly special, and this is just for you ❤️";
+    message.insertAdjacentElement('afterend', revealed);
+    revealBtn.disabled = true;
+    revealBtn.innerHTML = '<span>✨ Revealed</span>';
+
+    revealed.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  function createHeart() {
+    const heart = document.createElement('div');
+    heart.className = 'heart';
+    heart.textContent = '❤️';
+    heart.style.left = Math.random() * 100 + '%';
+    heart.style.animationDuration = (Math.random() * 3 + 5) + 's';
+    heart.style.animationDelay = Math.random() * 2 + 's';
+    heartsContainer.appendChild(heart);
     
-    setTimeout(safePlay, 1000);
+    setTimeout(() => heart.remove(), 8000);
+  }
 
-    playBtn.addEventListener('click', ()=>{
-      audio.play().then(() => {
-        visualizer.classList.add('active');
-        playBtn.innerHTML = '<span>🎵 Playing</span>';
-      });
-    });
-
-    pauseBtn.addEventListener('click', ()=>{
-      audio.pause();
-      visualizer.classList.remove('active');
-      playBtn.innerHTML = '<span>🎶 Play Music</span>';
-    });
-
-    revealBtn.addEventListener('click', ()=>{
-      const revealed = document.createElement('div');
-      revealed.className = 'revealed-message';
-      revealed.innerHTML = "P.S. You'll always be someone special to me. No matter where life takes us, you hold a piece of my heart that no one else can touch. You are truly special, and this is just for you ❤️";
-      message.insertAdjacentElement('afterend', revealed);
-      revealBtn.disabled = true;
-      revealBtn.innerHTML = '<span>✨ Revealed</span>';
-    });
-
-    function createHeart(){
-      const heart = document.createElement('div');
-      heart.className = 'heart';
-      heart.textContent = '❤️';
-      heart.style.left = Math.random() * 100 + '%';
-      heart.style.animationDuration = (Math.random() * 3 + 5) + 's';
-      heart.style.animationDelay = Math.random() * 2 + 's';
-      heartsContainer.appendChild(heart);
-      
-      setTimeout(() => heart.remove(), 8000);
-    }
-
-    setInterval(createHeart, 2000);
-    for(let i = 0; i < 5; i++){
-      setTimeout(createHeart, i * 400);
-    }
-  </script>
+  setInterval(createHeart, 2000);
+  for (let i = 0; i < 5; i++) {
+    setTimeout(createHeart, i * 400);
+  }
+</script>
 </body>
 </html>
+
 
 
