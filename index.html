@@ -21,12 +21,16 @@
       position:relative;
     }
 
-
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      z-index:1;
-      filter:brightness(0.4) saturate(1.2);
+    /* ✅ FIXED background video CSS */
+    .bgvid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1;
+      filter: brightness(0.4) saturate(1.2);
     }
 
     .vignette{
@@ -285,7 +289,7 @@
 <body>
 
   <video autoplay muted loop playsinline class="bgvid">
-    <source src="https://cdn.pixabay.com/video/2023/08/17/176270-858511222_large.mp4" type="video/mp4">
+    <source src="FLOWERS.mp4" type="video/mp4">
   </video>
 
   <div class="vignette"></div>
@@ -319,7 +323,7 @@
   </div>
 
   <audio id="bgAudio" loop>
-    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_bfba8a2049.mp3?filename=romantic-piano-ambient-11132.mp3" type="audio/mpeg">
+    <source src="Mine.mp3" type="audio/mpeg">
   </audio>
 
   <script>
