@@ -26,7 +26,7 @@
       top:0;left:0;
       width:100%;
       height:100%;
-      object-fit:cover; /* always fill screen */
+      object-fit:cover;
       z-index:1;
       filter:brightness(0.4) saturate(1.2);
     }
@@ -59,10 +59,20 @@
     }
 
     @keyframes floatHeart {
-      0%{opacity:0; transform:translateY(100vh) scale(0) rotate(0deg);}
-      10%{opacity:0.6;}
-      90%{opacity:0.3;}
-      100%{opacity:0; transform:translateY(-100px) scale(1.5) rotate(360deg);}
+      0%{
+        opacity:0;
+        transform:translateY(100vh) scale(0) rotate(0deg);
+      }
+      10%{
+        opacity:0.6;
+      }
+      90%{
+        opacity:0.3;
+      }
+      100%{
+        opacity:0;
+        transform:translateY(-100px) scale(1.5) rotate(360deg);
+      }
     }
 
     .overlay{
@@ -81,8 +91,14 @@
     }
 
     @keyframes fadeInUp {
-      from {opacity:0; transform:translateY(60px) scale(0.95);}
-      to {opacity:1; transform:translateY(0) scale(1);}
+      from {
+        opacity:0; 
+        transform:translateY(60px) scale(0.95);
+      }
+      to {
+        opacity:1; 
+        transform:translateY(0) scale(1);
+      }
     }
 
     h1{
@@ -113,7 +129,9 @@
       animation:fadeIn 1.5s ease 0.5s forwards;
     }
 
-    @keyframes fadeIn {to{opacity:1}}
+    @keyframes fadeIn {
+      to{opacity:1}
+    }
 
     .message{
       font-size:clamp(17px,2vw,21px);
@@ -155,18 +173,43 @@
     }
 
     .btn::before{
-      content:''; position:absolute; top:50%; left:50%;
-      width:0; height:0;
+      content:'';
+      position:absolute;
+      top:50%;
+      left:50%;
+      width:0;
+      height:0;
       border-radius:50%;
       background:rgba(255,255,255,0.3);
       transform:translate(-50%, -50%);
       transition:width 0.6s, height 0.6s;
     }
-    .btn:hover::before{width:300px;height:300px;}
-    .btn:hover{transform:translateY(-3px) scale(1.05); box-shadow:0 8px 25px rgba(255,107,154,0.5);}
-    .btn:active{transform:translateY(-1px) scale(1.02);}
-    .btn:disabled{background:linear-gradient(135deg, #999 0%, #bbb 100%); cursor:not-allowed; transform:none; box-shadow:none;}
-    .btn span{position:relative; z-index:1;}
+
+    .btn:hover::before{
+      width:300px;
+      height:300px;
+    }
+
+    .btn:hover{
+      transform:translateY(-3px) scale(1.05);
+      box-shadow:0 8px 25px rgba(255,107,154,0.5);
+    }
+
+    .btn:active{
+      transform:translateY(-1px) scale(1.02);
+    }
+
+    .btn:disabled{
+      background:linear-gradient(135deg, #999 0%, #bbb 100%);
+      cursor:not-allowed;
+      transform:none;
+      box-shadow:none;
+    }
+
+    .btn span{
+      position:relative;
+      z-index:1;
+    }
 
     footer{
       margin-top:30px;
@@ -189,8 +232,14 @@
     }
 
     @keyframes revealFade {
-      from{opacity:0; transform:translateY(20px) scale(0.95);}
-      to{opacity:1; transform:translateY(0) scale(1);}
+      from{
+        opacity:0;
+        transform:translateY(20px) scale(0.95);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+      }
     }
 
     .music-visualizer{
@@ -203,7 +252,10 @@
       opacity:0;
       transition:opacity 0.5s;
     }
-    .music-visualizer.active{opacity:1;}
+
+    .music-visualizer.active{
+      opacity:1;
+    }
 
     .bar{
       width:4px;
@@ -211,6 +263,7 @@
       border-radius:2px;
       animation:pulse 0.8s ease-in-out infinite;
     }
+
     .bar:nth-child(1){animation-delay:0s; height:15px}
     .bar:nth-child(2){animation-delay:0.1s; height:25px}
     .bar:nth-child(3){animation-delay:0.2s; height:35px}
@@ -219,44 +272,22 @@
     .bar:nth-child(6){animation-delay:0.5s; height:30px}
     .bar:nth-child(7){animation-delay:0.6s; height:20px}
 
-    @keyframes pulse {0%,100%{transform:scaleY(0.5)} 50%{transform:scaleY(1)}}
+    @keyframes pulse {
+      0%, 100%{transform:scaleY(0.5)}
+      50%{transform:scaleY(1)}
+    }
 
-    /* 📱 Responsive adjustments */
     @media(max-width:768px){
       .overlay{padding:35px 25px}
       .controls{gap:10px}
       .btn{padding:12px 22px; font-size:14px}
-    }
-
-    @media(max-width:480px){
-      h1{font-size:28px;}
-      .message{font-size:15px; padding:20px;}
-      .btn{padding:10px 18px; font-size:13px;}
-    }
-
-    /* 🔒 Force portrait orientation hint */
-    @media screen and (orientation: landscape) {
-      body::before {
-        content: "📱 Please rotate your phone to portrait";
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: rgba(0,0,0,0.7);
-        padding: 20px 30px;
-        border-radius: 10px;
-        color: white;
-        font-size: 18px;
-        z-index: 9999;
-        text-align: center;
-      }
     }
   </style>
 </head>
 <body>
 
   <video autoplay muted loop playsinline class="bgvid">
-    <source src="FLOWERS.mp4" type="video/mp4">
+    <source src="https://cdn.pixabay.com/video/2023/08/17/176270-858511222_large.mp4" type="video/mp4">
   </video>
 
   <div class="vignette"></div>
@@ -267,8 +298,13 @@
     <p class="subtitle">This is my little space for you ❤️</p>
     
     <div class="music-visualizer" id="visualizer">
-      <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-      <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
     </div>
 
     <div class="message" id="message">
@@ -285,7 +321,7 @@
   </div>
 
   <audio id="bgAudio" loop>
-    <source src="Mine.mp3" type="audio/mpeg">
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_bfba8a2049.mp3?filename=romantic-piano-ambient-11132.mp3" type="audio/mpeg">
   </audio>
 
   <script>
@@ -303,20 +339,30 @@
         playBtn.innerHTML = '<span>🎵 Playing</span>';
       }).catch(()=>{}); 
     }
+    
     setTimeout(safePlay, 1000);
 
-    playBtn.addEventListener('click', ()=>{ audio.play().then(() => {
+    playBtn.addEventListener('click', ()=>{
+      audio.play().then(() => {
         visualizer.classList.add('active');
-        playBtn.innerHTML = '<span>🎵 Playing</span>'; }); });
+        playBtn.innerHTML = '<span>🎵 Playing</span>';
+      });
+    });
 
-    pauseBtn.addEventListener('click', ()=>{ audio.pause(); visualizer.classList.remove('active');
-      playBtn.innerHTML = '<span>🎶 Play Music</span>'; });
+    pauseBtn.addEventListener('click', ()=>{
+      audio.pause();
+      visualizer.classList.remove('active');
+      playBtn.innerHTML = '<span>🎶 Play Music</span>';
+    });
 
-    revealBtn.addEventListener('click', ()=>{ const revealed = document.createElement('div');
+    revealBtn.addEventListener('click', ()=>{
+      const revealed = document.createElement('div');
       revealed.className = 'revealed-message';
       revealed.innerHTML = "P.S. You'll always be someone special to me. No matter where life takes us, you hold a piece of my heart that no one else can touch. ❤️";
       message.insertAdjacentElement('afterend', revealed);
-      revealBtn.disabled = true; revealBtn.innerHTML = '<span>✨ Revealed</span>'; });
+      revealBtn.disabled = true;
+      revealBtn.innerHTML = '<span>✨ Revealed</span>';
+    });
 
     function createHeart(){
       const heart = document.createElement('div');
@@ -326,10 +372,14 @@
       heart.style.animationDuration = (Math.random() * 3 + 5) + 's';
       heart.style.animationDelay = Math.random() * 2 + 's';
       heartsContainer.appendChild(heart);
+      
       setTimeout(() => heart.remove(), 8000);
     }
+
     setInterval(createHeart, 2000);
-    for(let i = 0; i < 5; i++){ setTimeout(createHeart, i * 400); }
+    for(let i = 0; i < 5; i++){
+      setTimeout(createHeart, i * 400);
+    }
   </script>
 </body>
 </html>
